@@ -35,4 +35,5 @@ def Crc_CalculateCRC8Runtime(Crc_Length, Crc_Data):
     return Crc_Value
 
 CrcReturn = Crc_CalculateCRC8Runtime(len(CrcRaw), CrcRaw)
-print("0x%x"%(CrcReturn & 0xFF)) # 整型位宽64bit，高位参与了运算，取数值后2位
+# 整型位宽64bit，高位参与了运算，取数值后2位
+print("0x%x"%(CrcReturn & 0xFF))
