@@ -1,4 +1,6 @@
-CrcRaw = [0x70, 0xA0] # 0x34
+
+CrcRaw = [0x70, 0x00, 0x0F, 0xA0, 0xFA, 0x0A, 0x0C] # 0xD8
+# CrcRaw = [0x70, 0xA0] # 0x34
 
 def Crc_CalculateCRC8Runtime(Crc_Length, Crc_Data):
 
@@ -33,4 +35,4 @@ def Crc_CalculateCRC8Runtime(Crc_Length, Crc_Data):
     return Crc_Value
 
 CrcReturn = Crc_CalculateCRC8Runtime(len(CrcRaw), CrcRaw)
-print('0x%x'%CrcReturn)
+print("0x%x"%(CrcReturn & 0xFF)) # 整型位宽64bit，高位参与了运算，取数值后2位
