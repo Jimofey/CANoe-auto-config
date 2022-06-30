@@ -79,6 +79,7 @@ variables{
 * Description   : Withing CANoe12.5 & vTs5.0, no need to define calculate function, use internal function instead.
 * Reference     : https://www.autosar.org/fileadmin/user_upload/standards/classic/4-3/AUTOSAR_SWS_CRCLibrary.pdf
 *                 https://zhuanlan.zhihu.com/p/137042362
+* Web Calculator: http://www.sunshine2k.de/coding/javascript/crc/crc_js.html
 * Input         : byte Crc_Length, byte Crc_Data[]
 * Output        : None
 * Return        : Crc_Value
@@ -100,9 +101,9 @@ byte Crc_CalculateCRC8Runtime(byte Crc_Length, byte Crc_Data[])
   
   Crc_DataAddr = 0;
   Crc_LoopCounter = 0;
-  XOR_Value = 0; //Not always 0x0.
+  XOR_Value = 0; // Could be 0xFF.
   u8_poly = 0x1D; // Autosar profile 1, #define CRC_POLYNOMIAL_8  (0x1Du 10000 0000)
-  init_CRC_Value = 0; // Default is not always 0x0.
+  init_CRC_Value = 0; // Default value could be 0xFF.
   Crc_Value = init_CRC_Value;
   
   for (Crc_DataAddr = 0; Crc_DataAddr < Crc_Length; Crc_DataAddr++) // #10 Perform CRC calculation for each byte in Crc_Data
