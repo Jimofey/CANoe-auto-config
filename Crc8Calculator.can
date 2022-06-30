@@ -84,7 +84,7 @@ variables{
 * Return        : Crc_Value
 * Others        : Need to define: 
 *                   u8_poly for 1st bit calculate, 
-*                   init_CRC_Value for 1st ^, 
+*                   init_CRC_Value for 1st XOR, 
 *                   XOR_Value before return.
 * Author        : none
 *-------------------------------------------------------------------------------------------------*/
@@ -108,11 +108,10 @@ byte Crc_CalculateCRC8Runtime(byte Crc_Length, byte Crc_Data[])
   for (Crc_DataAddr = 0; Crc_DataAddr < Crc_Length; Crc_DataAddr++) // #10 Perform CRC calculation for each byte in Crc_Data
   {
     Crc_Value ^= Crc_Data[Crc_DataAddr]; 
-    /* #20 XOR next byte of Crc_Data with current CRC value. This is equivalent to calculating CRC value of concatenated bytes
-     *     concatenated bytes */
+    // #20 XOR next byte of Crc_Data with current CRC value. This is equivalent to calculating CRC value of concatenated bytes
     for (Crc_LoopCounter = 0; Crc_LoopCounter < 8; Crc_LoopCounter++)
     {
-      if ((Crc_Value & 0x80> 0) // #35 If MSB is 1, CRC value is XORed with polynomial
+      if ((Crc_Value & 0x80) > 0) // #35 If MSB is 1, CRC value is XORed with polynomial
       {
         Crc_Value = ((Crc_Value << 1)) ^ u8_poly;
       }
@@ -140,13 +139,16 @@ on message message01 // SPECIFIC
   if (@UserDef_CRCTest::Current_MsgID == this.id) // to avoid multi-calculate
   {
 
-    @UserDef_CRCTest::CalculateChks = Crc_CalculateCRC8Runtime(6,crc_buff);
+    @UserDef_CRCTest::Current_Cntr_Last = this.counterSignal; //SPECIFIC
+
+    /* Code to define crc_buff[] */
+    @UserDef_CRCTest::CalculateChks = Crc_CalculateCRC8Runtime(6,crc_buff); // SPECIFIC
     
-    /* Checksum report */
-    if(this.checksum != @UserDef_CRCTest::CalculateChks) // SPECIFIC
+    // Checksum report
+    if(this.checksumSignal != @UserDef_CRCTest::CalculateChks) // SPECIFIC
     {
       write("%s pass errr: Checksum not match",this.name);
     }
   }
-}
 
+}
